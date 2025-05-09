@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon" href="logo.png">
+    <title>Applications - Spark</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="p-3" id="sidebar">
+    <button class="btn btn-light btn-sm d-md-none" id="toggleSidebar">☰</button>
+    
+    <!-- Logo with Circular Frame -->
+    <div class="text-center mb-2">
+        <img src="logo.png" alt="SPARK Logo" class="img-fluid rounded-circle" style="max-width: 80px; border: 3px solid white;">
+    </div>
+    
+    <ul class="nav flex-column mt-3">
+        <li class="nav-item"><a href="index.html" class="nav-link"><i class="fa-solid fa-chart-simple ican"></i> Dashboard</a></li>
+        <li class="nav-item"><a href="post-scholarship.html" class="nav-link"><i class="fa-solid fa-plus ican"></i> Post New Scholarship</a></li>
+        <li class="nav-item"><a href="manage-scholarships.html" class="nav-link"><i class="fa-solid fa-file ican"></i> Manage Scholarships</a></li>
+        <li class="nav-item"><a href="applications.html" class="nav-link"><i class="fa-solid fa-circle-down ican"></i> Applications Received</a></li>
+        <li class="nav-item"><a href="profile.html" class="nav-link"><i class="fa-solid fa-gear ican"></i> Profile Settings</a></li>
+        <li class="nav-item"><a href="login.html" class="nav-link"><i class="fa-solid fa-right-from-bracket"></i> Log out</a></li>
+    </ul>
+
+    <button id="themeToggle" class="btn btn-outline-light">🌙</button>
+</div>
+
+<!-- Main Content -->
+<div id="content" class="p-4">
+    <h2 class="mb-4">Applications Received</h2>
+
+    <div class="mb-3">
+        <label class="form-label">Filter by Status:</label>
+        <select id="applicationStatusFilter" class="form-select w-auto d-inline-block">
+            <option value="All">All</option>
+            <option value="Pending">Pending</option>
+            <option value="Approved">Approved</option>
+            <option value="Rejected">Rejected</option>
+        </select>
+        
+        <label class="form-label ms-3">Filter by Scholarship:</label>
+        <select id="scholarshipFilter" class="form-select w-auto d-inline-block">
+            <option value="All">All</option>
+            <option value="XYZ Scholarship">XYZ Scholarship</option>
+            <option value="ABC Trust Fund">ABC Trust Fund</option>
+        </select>
+        
+        <button id="downloadCSV" class="btn btn-success ms-2">Download CSV</button>                
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Student Name</th>
+                <th>Enrollment No</th>
+                <th>Email</th>
+                <th>Scholarship</th>
+                <th>SPI</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Rahul Sharma</td>
+                <td>20221001</td>
+                <td>rahul@example.com</td>
+                <td>XYZ Scholarship</td>
+                <td>8.5</td>
+                <td><span class="badge bg-warning">Pending</span></td>
+                <td>
+                    <button class="btn btn-sm btn-success">Approve</button>
+                    <button class="btn btn-sm btn-danger">Reject</button>
+                </td>
+            </tr>
+            <tr>
+                <td>Priya Verma</td>
+                <td>20221002</td>
+                <td>priya@example.com</td>
+                <td>ABC Trust Fund</td>
+                <td>9.2</td>
+                <td><span class="badge bg-success">Approved</span></td>
+                <td>
+                    <button class="btn btn-sm btn-danger">Reject</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const statusFilter = document.getElementById("applicationStatusFilter");
+        const scholarshipFilter = document.getElementById("scholarshipFilter");
+        const downloadButton = document.getElementById("downloadCSV");
+    
+        function filterTable() {
+            const selectedStatus = statusFilter.value.toLowerCase();
+            const selectedScholarship = scholarshipFilter.value.toLowerCase();
+    
+            document.querySelectorAll("tbody tr").forEach(row => {
+                const statusBadge = row.querySelector("td span.badge");
+                const scholarshipCell = row.querySelector("td:nth-child(4)");
+    
+                if (statusBadge && scholarshipCell) {
+                    const rowStatus = statusBadge.textContent.trim().toLowerCase();
+                    const rowScholarship = scholarshipCell.textContent.trim().toLowerCase();
+    
+                    const statusMatch = selectedStatus === "all" || rowStatus === selectedStatus;
+                    const scholarshipMatch = selectedScholarship === "all" || rowScholarship === selectedScholarship;
+    
+                    row.style.display = (statusMatch && scholarshipMatch) ? "" : "none";
+                }
+            });
+        }
+    
+        function downloadFilteredCSV() {
+            let csv = [];
+            let rows = document.querySelectorAll("tbody tr");
+    
+            rows.forEach(row => {
+                if (row.style.display !== "none") {  // Only include visible rows
+                    let rowData = [];
+                    let cols = row.querySelectorAll("td");
+    
+                    cols.forEach((col, index) => {
+                        if (index < cols.length - 2) {  // Exclude last 2 columns (Status & Actions)
+                            rowData.push(`"${col.innerText.replace(/"/g, '""')}"`);
+                        }
+                    });
+    
+                    csv.push(rowData.join(","));
+                }
+            });
+    
+            if (csv.length === 0) {
+                alert("No data to download.");
+                return;
+            }
+    
+            let csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
+            let encodedUri = encodeURI(csvContent);
+            let downloadLink = document.createElement("a");
+            downloadLink.href = encodedUri;
+            downloadLink.download = "filtered_applications.csv";
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        }
+    
+        statusFilter.addEventListener("change", filterTable);
+        scholarshipFilter.addEventListener("change", filterTable);
+        downloadButton.addEventListener("click", downloadFilteredCSV);
+    });
+</script>
+
+    
+
+<script src="script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

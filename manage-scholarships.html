@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="icon" href="logo.png">
+    <title>Manage Scholarships - Spark</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="p-3" id="sidebar">
+    <button class="btn btn-light btn-sm d-md-none" id="toggleSidebar">☰</button>
+    
+    <!-- Logo with Circular Frame -->
+    <div class="text-center mb-2">
+        <img src="logo.png" alt="SPARK Logo" class="img-fluid rounded-circle" style="max-width: 80px; border: 3px solid white;">
+    </div>
+    
+    <ul class="nav flex-column mt-3">
+        <li class="nav-item"><a href="index.html" class="nav-link"><i class="fa-solid fa-chart-simple ican"></i> Dashboard</a></li>
+        <li class="nav-item"><a href="post-scholarship.html" class="nav-link"><i class="fa-solid fa-plus ican"></i> Post New Scholarship</a></li>
+        <li class="nav-item"><a href="manage-scholarships.html" class="nav-link"><i class="fa-solid fa-file ican"></i> Manage Scholarships</a></li>
+        <li class="nav-item"><a href="applications.html" class="nav-link"><i class="fa-solid fa-circle-down ican"></i> Applications Received</a></li>
+        <li class="nav-item"><a href="profile.html" class="nav-link"><i class="fa-solid fa-gear ican"></i> Profile Settings</a></li>
+        <li class="nav-item"><a href="login.html" class="nav-link"><i class="fa-solid fa-right-from-bracket"></i> Log out</a></li>
+    </ul>
+
+    <button id="themeToggle" class="btn btn-outline-light">🌙</button>
+</div>
+
+<!-- Main Content -->
+<div id="content" class="p-4">
+    <h2 class="mb-4">Manage Scholarships</h2>
+
+    <!-- Filters -->
+    <div class="mb-3">
+        <label class="form-label">Filter by Status:</label>
+        <select id="statusFilter" class="form-select w-auto d-inline-block">
+            <option value="all">All</option>
+            <option value="active">Active</option>
+            <option value="expired">Expired</option>
+            <option value="drafts">Drafts</option>
+        </select>
+    </div>
+
+    <!-- Scholarships Table -->
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Deadline</th>
+                <th>Applications Received</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="scholarshipTable">
+            <tr data-status="active">
+                <td>XYZ Scholarship</td>
+                <td><span class="badge bg-success">Active</span></td>
+                <td>30-Apr-25</td>
+                <td>120</td>
+                <td>
+                    <a href="edit-scholarship.html" class="btn btn-sm btn-primary">Edit</a>
+                    <button class="btn btn-sm btn-danger">Delete</button>
+                    <a href="scholarship-details.html" class="btn btn-sm btn-info">View Details</a>
+                </td>
+            </tr>
+            <tr data-status="expired">
+                <td>ABC Trust Fund</td>
+                <td><span class="badge bg-danger">Expired</span></td>
+                <td>15-Jan-25</td>
+                <td>90</td>
+                <td>
+                    <a href="scholarship-details.html" class="btn btn-sm btn-info">View Details</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- jQuery (required for filtering) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#statusFilter').on('change', function() {
+        let selectedStatus = $(this).val();
+        $('#scholarshipTable tr').each(function() {
+            let rowStatus = $(this).data('status');
+            if (selectedStatus === 'all' || rowStatus === selectedStatus) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    });
+});
+</script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
