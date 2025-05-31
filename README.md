@@ -3,4 +3,4 @@ SPARK is a centralized scholarship management portal designed to streamline the 
 
 Download all files and save all in one folder. And open index file to view Admin Dashboard.
 
-![Agenda](https://github.com/user-attachments/assets/2ee0b4af-2f59-4cc9-9a37-11d0c24cdea0)
+![Screenshot 2025-05-31 144544](https://github.com/user-attachments/assets/6284ff29-ab48-4072-ad7a-3f79ee8ccd83)
